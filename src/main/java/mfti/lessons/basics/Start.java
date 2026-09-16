@@ -1,6 +1,6 @@
-package mfti.lessons;
+package mfti.lessons.basics;
 
-public class Main {
+public class Start {
 
     public static void main(String[] args) throws InterruptedException {
 

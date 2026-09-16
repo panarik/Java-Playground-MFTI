@@ -1,4 +1,4 @@
-package mfti.lessons;
+package mfti.lessons.basics;
 
 public class TextComposer {
 
