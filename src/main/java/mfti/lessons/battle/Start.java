@@ -1,4 +1,8 @@
-package ru.detmir.battle;
+package mfti.lessons.battle;
+
+import mfti.lessons.battle.model.Robot;
+import mfti.lessons.battle.model.Tank;
+import mfti.lessons.battle.model.Vehicle;
 
 import java.util.List;
 
@@ -28,7 +32,6 @@ public class Start {
         // По паренту:
         Vehicle tank = new Tank();
         Vehicle robot = new Robot();
-        int resultDamage = tank.damage;
 
         // по интерфейсу
         Actions first = new Tank();

@@ -1,4 +1,6 @@
-package ru.detmir.battle;
+package mfti.lessons.battle.model;
+
+import mfti.lessons.battle.Actions;
 
 public class Robot extends Vehicle implements Actions {
 

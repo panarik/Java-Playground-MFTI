@@ -1,4 +1,4 @@
-package ru.detmir.battle;
+package mfti.lessons.battle.model;
 
 public abstract class Vehicle {
 

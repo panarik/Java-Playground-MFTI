@@ -1,7 +1,6 @@
-package ru.detmir;
+package mfti.lessons;
 
 public class TextComposer {
-
 
 
     // вывод строки
@@ -10,7 +9,7 @@ public class TextComposer {
     }
 
     // вывод в консоль пример 2 printf
-    public void print2(){
+    public void print2() {
 
         // доп логика
         printRoot("результат доп логики");
@@ -21,7 +20,7 @@ public class TextComposer {
     private void printRoot(String input) {
 
         // вся логика
-        System.out.println("вывод контроллера: "+input);
+        System.out.printf("вывод контроллера: %s\n", input);
     }
 
 }
