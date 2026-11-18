@@ -1,5 +1,5 @@
 # Проект с примерами который разбираем
-ссылка на директорию проекта: https://github.com/panarik/Java-Playground/tree/master/src/main/java/com/github/panarik/javaLesson/lessons/multithreading
+ссылка на директорию проекта с примерами: https://github.com/panarik/Java-Playground/tree/master/src/main/java/com/github/panarik/javaLesson/lessons/multithreading
 
 # Домашнее задание
 Текст ДЗ: [imports/ДЗ-многопоточка.md](imports/ДЗ-многопоточка.md)
@@ -78,7 +78,7 @@
 ### Потоки-демоны
 - Пример: `multithreading/threads/ThreadsInterrupt.java` (метод `daemon1()`).
 - В `daemon1()` поток с бесконечным циклом помечен `setDaemon(true)`. Когда `main` завершается, программа закрывается вместе с ним, хотя цикл ещё работает. Обычный (не демон) поток с таким циклом удержал бы программу навсегда.
-- Для пула это решение: если воркеры не демоны, программа не завершится, пока пул не закрыт через `shutdownAfterAllTasks()` или `shutdownNow()`. Если воркеры демоны, программа может закрыться раньше, чем выполнятся задачи из очереди. Выбираем вариант при разборе задачи 1, в ДЗ явно не указано.
+- Для пула это решение: если воркеры не демоны, программа не завершится, пока пул не закрыт через `shutdownAfterAllTasks()` или `shutdownNow()`. Если воркеры демоны, программа может закрыться раньше, чем выполнятся задачи из очереди.
 
 ### Исключение в задаче не должно останавливать воркер
 - Пример: `lang/exceptions/Exceptions.java`.
@@ -199,10 +199,11 @@
 ГОТОВО!
 
 3. `multithreading/threads/ThreadsSyncMult.java`: разные мониторы.
-
+ГОТОВО!
 
 4. `lang/collections/ListExample.java`: список как хранилище очереди задач.
-Лучше дописать пример LinkedList
+Обсудили LinkedList
+ГОТОВО!
 
 
 5. `multithreading/threads/ThreadsWait.java`: `wait` / `notifyAll`. На нём строятся очередь задач (задача 1) и `Result.get()` (задача 2).
@@ -212,15 +213,16 @@
 ГОТОВО!
 
 7. `multithreading/threads/ThreadsInterrupt.java` и `net/consoleserver/`: прерывание потока, `shutdownNow`, потоки-демоны.
-
+ГОТОВО!
 
 8. `multithreading/threads/ThreadsDeadLock.java`: deadlock. Вопрос на собеседовании: возможен ли deadlock в вашем пуле.
 ГОТОВО!
 
 9. `multithreading/Callables.java`: `Callable` и `Future`, прообраз `Result`.
-
+ГОТОВО!
 
 10. `architecture/patterns/behavioral/` (`command`, `observerPattern`, `state`, `iterator`), `lang/generic/`, `lang/exceptions/`: материал для `Result`, колбеков и задачи 3.
-
+ГОТОВО!
 
 11. `multithreading/ExecutorServiceExample.java`: в конце, как образец поведения пула.
+ГОТОВО!
