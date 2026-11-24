@@ -1,11 +1,12 @@
-package mfti.spring.beans;
+package mfti.lessons.springPatterns.beans.service;
 
+import mfti.lessons.springPatterns.beans.notification.Notifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Бизнес-операция. Зависит от {@link Notifier}, а не от {@link EmailNotifier}:
+ * Бизнес-операция. Зависит от {@link Notifier}, а не от {@link mfti.lessons.springPatterns.beans.notification.EmailNotifier}:
  * в этом файле нет импорта конкретной реализации.
  * Контейнер сам находит бин нужного типа и передаёт его в конструктор.
  */

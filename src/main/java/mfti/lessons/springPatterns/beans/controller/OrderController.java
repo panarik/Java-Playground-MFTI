@@ -1,5 +1,6 @@
-package mfti.spring.beans;
+package mfti.lessons.springPatterns.beans.controller;
 
+import mfti.lessons.springPatterns.beans.department.Department;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

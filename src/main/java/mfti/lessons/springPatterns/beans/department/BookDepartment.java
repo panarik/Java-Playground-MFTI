@@ -1,5 +1,6 @@
-package mfti.spring.beans;
+package mfti.lessons.springPatterns.beans.department;
 
+import mfti.lessons.springPatterns.beans.notification.Notifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 

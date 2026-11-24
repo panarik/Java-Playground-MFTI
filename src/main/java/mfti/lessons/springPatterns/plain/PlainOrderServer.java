@@ -1,4 +1,4 @@
-package mfti.spring.plain;
+package mfti.lessons.springPatterns.plain;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;

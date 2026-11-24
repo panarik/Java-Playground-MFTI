@@ -1,4 +1,4 @@
-package mfti.spring.beans;
+package mfti.lessons.springPatterns.beans.department;
 
 /**
  * Контракт отдела. Контроллер зависит от этого интерфейса.

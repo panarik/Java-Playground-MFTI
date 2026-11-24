@@ -1,16 +1,16 @@
 # Бины Spring. Инверсия зависимостей
 
-Учебный проект на Spring Boot 3.5 и Java 21. Он лежит в папке `spring-beans` и собирается своим `pom.xml`. Корневой проект семинаров от этого не меняется.
+Учебный проект на Spring Boot 3.5 и Java 21. Классы лежат в source root IDEA: `src/main/java/mfti/lessons/springPatterns/beans`. Запускаются из корневого `pom.xml`.
 
 В программе два показа на одном заказе. Контейнер Spring собирает бины: сервис зависит от интерфейса `Notifier`, счётчик один на все потоки. Тот же контейнер слушает `POST /order` на порту 8081 и раскладывает тело по бинам отделов. Рядом голый сервер на порту 8080 принимает те же тела, но оба отдела сидят в одном методе.
 
-Запуск из папки `spring-beans`:
+Запуск из корня репозитория:
 
 ```bash
 mvn spring-boot:run
 ```
 
-Класс с `main`: `mfti.spring.beans.BeansApplication`. После строки `Started BeansApplication` сервер остаётся на `localhost:8081`. Голый сервер запускается отдельно, он описан ниже.
+Класс с `main`: `mfti.lessons.springPatterns.beans.BeansApplication`. После строки `Started BeansApplication` сервер остаётся на `localhost:8081`. Голый сервер запускается отдельно, он описан ниже.
 
 ---
 
@@ -37,7 +37,7 @@ SpringApplication.run(BeansApplication.class, args);
 
 Дальше работает контейнер.
 
-1. Находит классы с `@Component` и `@Service` в пакете `mfti.spring.beans`.
+1. Находит классы с `@Component` и `@Service` в пакете `mfti.lessons.springPatterns.beans` и во вложенных: `controller`, `service`, `notification`, `department`, `demo`.
 2. Создаёт `EmailNotifier`: его конструктор пустой, ждать некого.
 3. Создаёт `OrderService` и кладёт в конструктор уже готовый `EmailNotifier`. В логе совпадают числа объектов: сервис получил тот самый экземпляр.
 4. Создаёт `SharedCounter` и `DemoRunner`.
@@ -105,9 +105,9 @@ OrderService  ──зависит от──▶  Notifier  ◀──реали�
 
 ## Для сравнения: сервер на пакете JDK
 
-Рядом лежит пакет `mfti.spring.plain`. Это не бин и не Spring: класс `PlainOrderServer` поднимает сервер из `com.sun.net.httpserver`. Сканер `@SpringBootApplication` его не видит, пакет другой.
+Рядом, уже в основном проекте, лежит пакет `mfti.lessons.springPatterns.plain`. Это не бин и не Spring: класс `PlainOrderServer` поднимает сервер из `com.sun.net.httpserver`. Сканер `@SpringBootApplication` его не видит, пакет другой.
 
-Запуск отдельный, из папки `spring-beans`:
+Запуск из корня репозитория:
 
 ```bash
 mvn compile exec:java@plain-server
@@ -180,11 +180,11 @@ APPLICATION FAILED TO START
 
 Description:
 
-Parameter 0 of constructor in mfti.spring.beans.OrderService required a bean of type 'mfti.spring.beans.Notifier' that could not be found.
+Parameter 0 of constructor in mfti.lessons.springPatterns.beans.service.OrderService required a bean of type 'mfti.lessons.springPatterns.beans.notification.Notifier' that could not be found.
 
 Action:
 
-Consider defining a bean of type 'mfti.spring.beans.Notifier' in your configuration.
+Consider defining a bean of type 'mfti.lessons.springPatterns.beans.notification.Notifier' in your configuration.
 ```
 
 `Parameter 0` — первый аргумент конструктора, это `Notifier`. Фраза `that could not be found` означает: подходящего бина в контейнере нет. Класс `EmailNotifier` в classpath есть, но без `@Component` контейнер не считает его бином.
@@ -216,7 +216,7 @@ mvn spring-boot:run
 ```text
 Description:
 
-Parameter 0 of constructor in mfti.spring.beans.OrderService required a single bean, but 2 were found:
+Parameter 0 of constructor in mfti.lessons.springPatterns.beans.service.OrderService required a single bean, but 2 were found:
 	- emailNotifier: defined in file [.../EmailNotifier.class]
 	- smsNotifier: defined in file [.../SmsNotifier.class]
 
@@ -279,32 +279,30 @@ Java молчит, потому что оба класса законно реа
 ## Состав
 
 ```text
-spring-beans/
-  pom.xml
-  src/main/java/mfti/spring/beans/
-    BeansApplication.java   старт контейнера
-    Notifier.java           интерфейс уведомления
-    EmailNotifier.java      единственная реализация, @Component
-    OrderService.java       @Service, в конструкторе только Notifier
-    Department.java         интерфейс отдела для POST /order
-    BookDepartment.java     бин книжного отдела, слово «книга» только здесь
-    ConstructionDepartment.java  бин строительного отдела, слово «бульдозер» только здесь
-    OrderController.java    POST /order на порту 8081, обходит бины Department
-    SharedCounter.java      общий бин с гонкой и с защищённым методом
-    DemoRunner.java         сценарий бинов и потоков, его вызывает контейнер
-  src/main/java/mfti/spring/plain/
-    PlainOrderServer.java   тот же заказ одним обработчиком HTTP, без Spring
-  src/main/resources/application.properties
+src/main/java/mfti/lessons/springPatterns/beans/
+  BeansApplication.java          старт контейнера, сканирует этот пакет и вложенные
+  controller/OrderController.java
+  service/OrderService.java
+  notification/Notifier.java
+  notification/EmailNotifier.java
+  department/Department.java
+  department/BookDepartment.java
+  department/ConstructionDepartment.java
+  demo/DemoRunner.java
+  demo/SharedCounter.java
+src/main/java/mfti/lessons/springPatterns/plain/
+  PlainOrderServer.java          тот же заказ одним обработчиком HTTP, без Spring
+src/main/resources/application.properties
 ```
 
-Базы и `@Transactional` в примере нет. HTTP у Spring — один `POST /order` на порту 8081, чтобы те же тела, что у голого сервера, разобрать по бинам отделов. Голый сервер на порту 8080 остаётся в `mfti.spring.plain`.
+Базы и `@Transactional` в примере нет. HTTP у Spring — один `POST /order` на порту 8081, чтобы те же тела, что у голого сервера, разобрать по бинам отделов. Голый сервер на порту 8080 лежит в основном проекте, пакет `mfti.lessons.springPatterns.plain`.
 
 ---
 
 ## Что сделать на занятии
 
-1. Запустить `mvn spring-boot:run` и по логу пройти создание бинов: одинаковые номера объектов у `EmailNotifier` и у аргумента `OrderService`.
-2. Снять `@Component` с `EmailNotifier`, убедиться, что `compile` проходит, а `spring-boot:run` падает с `required a bean of type 'mfti.spring.beans.Notifier'`. Вернуть аннотацию.
+1. Запустить `mvn spring-boot:run` из корня репозитория и по логу пройти создание бинов: одинаковые номера объектов у `EmailNotifier` и у аргумента `OrderService`.
+2. Снять `@Component` с `EmailNotifier`, убедиться, что `compile` проходит, а `spring-boot:run` падает с `required a bean of type 'mfti.lessons.springPatterns.beans.notification.Notifier'`. Вернуть аннотацию.
 3. Добавить второй `@Component` на реализацию `Notifier`, увидеть `required a single bean, but 2 were found`. Удалить лишний класс и сделать `mvn clean`.
 4. В логе счётчика показать один `SharedCounter@...` на восьми потоках, итог 160 и итог меньше 160.
-5. Отдельной командой `mvn compile exec:java@plain-server` поднять голый сервер. Сначала три тела на `localhost:8081`, потом те же три на `localhost:8080`. На `книга про бульдозер` у Spring в ответе две строки, у голого сервера одна: нижний `if` затёр `reply`.
+5. Отдельной командой из корня `mvn compile exec:java@plain-server` поднять голый сервер. Сначала три тела на `localhost:8081`, потом те же три на `localhost:8080`. На `книга про бульдозер` у Spring в ответе две строки, у голого сервера одна: нижний `if` затёр `reply`.
