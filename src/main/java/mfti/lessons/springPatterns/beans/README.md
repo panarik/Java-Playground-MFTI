@@ -104,7 +104,7 @@ OrderService  ──зависит от──▶  Notifier  ◀──реали�
 
 ## Голый сервер рядом
 
-`PlainOrderServer` не бин и не Spring. Оба отдела дописали по `if` в один метод `handle` и пишут в одну переменную `reply`.
+`PlainOrderServer` только поднимает сервер и передаёт ему объект `OrderHandler`. Это не бин и не Spring. Оба отдела дописали по `if` в один метод `OrderHandler.handle` и пишут в одну переменную `reply`.
 
 По отдельности каждый проверил только своё слово. Запрос, в котором есть оба слова, проходит оба `if`. Строительный отдел затирает ответ книжного: кто ниже в методе, тот и остаётся в ответе клиенту. Книжный отдел своё условие не менял. Его ответ стёрла чужая ветка в том же методе.
 
@@ -212,7 +212,8 @@ src/main/java/mfti/lessons/springPatterns/beans/
   demo/DemoRunner.java
   demo/SharedCounter.java
 src/main/java/mfti/lessons/springPatterns/plain/
-  PlainOrderServer.java          тот же заказ одним обработчиком HTTP, без Spring
+  PlainOrderServer.java          старт голого HTTP-сервера, создаёт OrderHandler
+  OrderHandler.java              тот же заказ одним обработчиком, без Spring
 src/main/resources/application.properties
 ```
 

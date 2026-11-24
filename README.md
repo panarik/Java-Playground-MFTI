@@ -103,7 +103,7 @@ curl -H 'Content-Type: text/plain; charset=utf-8' -d 'книга про буль
 
 ### Plain server
 
-Пакет `mfti.lessons.springPatterns.plain`, класс `PlainOrderServer`. Файл лежит в source root IDEA: `src/main/java/mfti/lessons/springPatterns/plain/PlainOrderServer.java`. Это не Spring: сервер из `com.sun.net.httpserver`. Оба отдела дописали по `if` в один метод `handle` и пишут в одну переменную `reply`.
+Пакет `mfti.lessons.springPatterns.plain`. `PlainOrderServer` только поднимает сервер и отдаёт ему объект `OrderHandler`. Оба `if` лежат в `src/main/java/mfti/lessons/springPatterns/plain/OrderHandler.java`: оба отдела пишут в одну переменную `reply`. Это не Spring: сервер из `com.sun.net.httpserver`.
 
 Команды из корня репозитория. Процесс не останавливать, пока идут запросы.
 
