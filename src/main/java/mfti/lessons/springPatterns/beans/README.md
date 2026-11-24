@@ -4,7 +4,19 @@
 
 В программе два показа на одном заказе. Контейнер Spring собирает бины: сервис зависит от интерфейса `Notifier`, счётчик один на все потоки. Тот же контейнер слушает `POST /order` на порту 8081 и раскладывает тело по бинам отделов. Рядом голый сервер на порту 8080 принимает те же тела, но оба отдела сидят в одном методе.
 
-Запуск из корня репозитория:
+Команды запускать из корня репозитория. Приглашение оболочки должно заканчиваться на `Java-Playground-MFTI`, не на `beans`. Из этой папки Maven не видит `pom.xml` и пишет `No plugin found for prefix 'spring-boot'`. Это не сломанный бин. Выйти в корень:
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+```
+
+Компиляция. Контейнер не запускается, наличие бина `Notifier` не проверяется. Успех — строка `BUILD SUCCESS` в конце. Снятый `@Component` с `EmailNotifier` эту команду не ломает.
+
+```bash
+mvn -DskipTests compile
+```
+
+Старт. Здесь Spring создаёт бины. Без `@Component` на `EmailNotifier` падает эта команда, компиляция при этом уже прошла.
 
 ```bash
 mvn spring-boot:run
@@ -161,7 +173,7 @@ curl -d 'книга про бульдозер' http://localhost:8080/order
 2. Соберите проект:
 
 ```bash
-mvn -q -DskipTests compile
+mvn -DskipTests compile
 ```
 
 Сборка проходит. `OrderService` по-прежнему ссылается на интерфейс, а не на `EmailNotifier`.
@@ -202,7 +214,7 @@ Consider defining a bean of type 'mfti.lessons.springPatterns.beans.notification
 Скопируйте `EmailNotifier` в новый класс `SmsNotifier`, оставьте на нём `@Component` и `implements Notifier`. `OrderService` не меняйте.
 
 ```bash
-mvn -q -DskipTests compile
+mvn -DskipTests compile
 ```
 
 Сборка проходит: сервис по-прежнему видит только интерфейс.

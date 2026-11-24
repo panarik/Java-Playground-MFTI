@@ -15,7 +15,7 @@
 
 ## Семинар по спрингу
 
-Ветка `spring-1`. Код обоих серверов в source root IDEA, пакет `mfti.lessons.springPatterns`. Подробный разбор по строкам — в `spring-beans/README.md`. Java 21. Оба сервера запускаются из корневого `pom.xml`.
+Ветка `spring-1`. Код обоих серверов в source root IDEA, пакет `mfti.lessons.springPatterns`. Подробный разбор по строкам — в `src/main/java/mfti/lessons/springPatterns/beans/README.md`. Java 21. Оба сервера запускаются из корневого `pom.xml`.
 
 Примеры добавлены, чтобы на одних и тех же телах запроса показать две сборки задачи. Ниже каждый сервер со своим запуском и своими запросами. Порты разные, процессы можно держать одновременно.
 
@@ -25,7 +25,19 @@
 
 Пакет `mfti.lessons.springPatterns.beans` и вложенные `controller`, `service`, `notification`, `department`, `demo`. Контейнер создаёт бины и сам вызывает код. `OrderService` принимает в конструкторе интерфейс `Notifier`, конкретный `EmailNotifier` не импортирует. Книжный и строительный отделы — отдельные бины `BookDepartment` и `ConstructionDepartment`. Контроллер слов «книга» и «бульдозер» не содержит: он обходит список бинов `Department`. На том же старте `SharedCounter` показывает, что singleton-бин один на все потоки.
 
-Команды из корня репозитория, заходить в `spring-beans` не нужно. Процесс не останавливать, пока идут запросы.
+Команды запускать из корня репозитория. В приглашении оболочки должно быть `Java-Playground-MFTI`, не `beans`. Папка `beans` — это пакет с классами, в ней нет `pom.xml`. Если терминал открыт там, Spring не стартует с ошибкой `No plugin found for prefix 'spring-boot'`. Это не отсутствие бина. Сначала выйти в корень:
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+```
+
+Компиляция. Spring при этом не стартует и бины не проверяет. Успех выглядит как `BUILD SUCCESS` в конце лога. Если снять `@Component` с `EmailNotifier`, эта команда всё равно заканчивается `BUILD SUCCESS`: `OrderService` ссылается на интерфейс `Notifier`, а не на класс письма.
+
+```bash
+mvn -DskipTests compile
+```
+
+Старт контейнера. Процесс не останавливать, пока идут запросы. Без `@Component` на `EmailNotifier` упадёт уже эта команда, хотя компиляция выше прошла.
 
 ```bash
 mvn spring-boot:run
